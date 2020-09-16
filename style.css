@@ -204,6 +204,9 @@
 
 .footer-items-container .item.center span {
   border: none;
+  padding: 0;
+  margin-left: 10px;
+  text-transform: uppercase;
 }
 
 .footer-items-container .item span {
@@ -213,4 +216,5 @@
   font-size: 19px;
   color: #9D9D9D;
   padding: 10px 40px;
+  text-transform: uppercase;
 }
