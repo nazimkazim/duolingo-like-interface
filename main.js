@@ -77,17 +77,21 @@ board.innerHTML =
   <div class="speech-bubble">
     <div class="sent-container"><img id="speaker" src="/assets/speaker.svg" />
     ${data[incr].phraseByWord.map((word) => {
-    return `<button value=${word.word} class="word-item">${word.word}</button>`;
+    return `<button value=${word.word} class="word-item ${word.highlighted && 'highlighted'}">${word.word}</button>`;
   }).join(' ')}
     </div</div></div>`;
 
 
 const speaker = document.getElementById('speaker');
 
-speaker.addEventListener('click', () => {
-  let toSpeak = new SpeechSynthesisUtterance(data[incr].frPhrase);
-  toSpeak.lang = 'fr-FR';
+const speak = (phrase, lang) => {
+  let toSpeak = new SpeechSynthesisUtterance(phrase);
+  toSpeak.lang = lang;
   tts.speak(toSpeak);
+};
+
+speaker.addEventListener('click', () => {
+  speak(data[incr].frPhrase, 'fr-FR');
 });
 
 const wordItems = document.querySelectorAll('.word-item');
@@ -95,9 +99,7 @@ const wordItems = document.querySelectorAll('.word-item');
 //console.log(wordItems)
 
 wordItems.forEach(wordItem => wordItem.addEventListener('mouseover', (e) => {
-  console.log(e.target.value);
-  let toSpeak = new SpeechSynthesisUtterance(e.target.value);
-  toSpeak.lang = 'fr-FR';
-  tts.speak(toSpeak);
+  //console.log(e.target.value);
+  speak(e.target.value, 'fr-FR');
 }));
 

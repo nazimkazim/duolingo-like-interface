@@ -144,6 +144,21 @@
   border: none;
   background-color: transparent;
   outline: none;
+  border-bottom: 2px solid grey;
+  border-style: dashed;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  padding-bottom: 5px;
+}
+
+.highlighted {
+  color: orange;
+  border-bottom: 2px solid orange;
+  border-style: dashed;
+  border-top: none;
+  border-right: none;
+  border-left: none;
 }
 
 .answer-field {
