@@ -69,17 +69,40 @@ const data = [
   }
 ];
 
+const tts = window.speechSynthesis;
 const board = document.querySelector('.board');
+let voices = [];
+let incr = 0;
 
-data.map((item) => {
+const GetVoices = () => {
+  voices = tts.getVoices()[8];
+  //console.log(voices)
+};
+
+GetVoices()
+
+if (speechSynthesis !== undefined) {
+  speechSynthesis.onvoiceschanged = GetVoices;
+}
+//console.log(voices);
+
+
   board.innerHTML =
     `
   <div class="target-lang-container">
-  <img src=${item.pic} />
+  <img src=${data[incr].pic} />
   <div class="speech-bubble">
-    <div class="sent-container"><img src="/assets/speaker.svg" />
-    ${item.phraseByWord.map((word) => {
+    <div class="sent-container"><img id="speaker" src="/assets/speaker.svg" />
+    ${data[incr].phraseByWord.map((word) => {
       return `<span>${word.word}</span>`;
     }).join(' ')}
     </div</div></div>`;
+
+
+const speaker = document.getElementById('speaker');
+speaker.addEventListener('click', () => {
+  let toSpeak = new SpeechSynthesisUtterance(data[incr].frPhrase);
+  toSpeak.lang = 'fr-FR';
+  tts.speak(toSpeak);
 });
+
