@@ -129,6 +129,7 @@
 
 .sent-container span {
   cursor: pointer;
+  margin-right: 5px;
 }
 
 .sent-container img {
@@ -172,6 +173,7 @@
 .footer {
   display: flex;
   justify-content: center;
+  border-top: 2px solid #E5E5E5;
   width: 100%;
   height: 140px;
   /* background-color: cornflowerblue; */
