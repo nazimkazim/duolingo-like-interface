@@ -1,6 +1,6 @@
 const board = document.querySelector('.board');
 const tts = window.speechSynthesis;
-let incr = 2;
+let incr = 0;
 const randomWordsArr = [];
 const answer = [];
 
@@ -32,6 +32,8 @@ function shuffle(array) {
 }
 
 
+
+
 board.innerHTML =
   `
   <div class="target-lang-container">
@@ -48,10 +50,10 @@ board.innerHTML =
   <div class="answer-field">
     ${answer.map((ans) => (
       `<button value=${ans} class="word">${ans}</button>`
-    ))}
+    )).join(' ')}
   </div>
   <div class="random-words-field">
-    ${randomWordsArr.map((item) => (
+    ${shuffle(randomWordsArr).map((item) => (
     `<button value=${item} class="word">${item}</button>`
   )).join(' ')
   }
@@ -81,8 +83,14 @@ wordItems.forEach(wordItem => wordItem.addEventListener('mouseover', (e) => {
   speak(e.target.value, 'fr-FR');
 }));
 
+function answerFunc(val) {
+  return answer.push(val)
+}
+
+
+
 word.forEach(item => item.addEventListener('click', (e) => {
-  answer.push(e.target.value)
+  answerFunc(e.target.value);
   console.log(e.target.value);
-}));
+}))
 
