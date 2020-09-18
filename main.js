@@ -17,10 +17,6 @@ const data = [
         trans: ['(you) speak', '(you) are speaking', '(you) are talking']
       },
       {
-        word: 'parles',
-        trans: ['(you) speak', '(you) are speaking', '(you) are talking']
-      },
-      {
         word: 'japonais',
         trans: ['Japanese'],
         highlighted: true
@@ -69,40 +65,39 @@ const data = [
   }
 ];
 
-const tts = window.speechSynthesis;
 const board = document.querySelector('.board');
-let voices = [];
+const tts = window.speechSynthesis;
 let incr = 0;
 
-const GetVoices = () => {
-  voices = tts.getVoices()[8];
-  //console.log(voices)
-};
 
-GetVoices()
-
-if (speechSynthesis !== undefined) {
-  speechSynthesis.onvoiceschanged = GetVoices;
-}
-//console.log(voices);
-
-
-  board.innerHTML =
-    `
+board.innerHTML =
+  `
   <div class="target-lang-container">
   <img src=${data[incr].pic} />
   <div class="speech-bubble">
     <div class="sent-container"><img id="speaker" src="/assets/speaker.svg" />
     ${data[incr].phraseByWord.map((word) => {
-      return `<span>${word.word}</span>`;
-    }).join(' ')}
+    return `<button value=${word.word} class="word-item">${word.word}</button>`;
+  }).join(' ')}
     </div</div></div>`;
 
 
 const speaker = document.getElementById('speaker');
+
 speaker.addEventListener('click', () => {
   let toSpeak = new SpeechSynthesisUtterance(data[incr].frPhrase);
   toSpeak.lang = 'fr-FR';
   tts.speak(toSpeak);
 });
+
+const wordItems = document.querySelectorAll('.word-item');
+
+//console.log(wordItems)
+
+wordItems.forEach(wordItem => wordItem.addEventListener('mouseover', (e) => {
+  console.log(e.target.value);
+  let toSpeak = new SpeechSynthesisUtterance(e.target.value);
+  toSpeak.lang = 'fr-FR';
+  tts.speak(toSpeak);
+}));
 
