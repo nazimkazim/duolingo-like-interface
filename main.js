@@ -1,4 +1,11 @@
 const board = document.querySelector('.board');
+const avatarImg = document.querySelector('.avatar-img');
+const sentContainer = document.querySelector('.sent-container');
+const speakerEl = document.createElement('img');
+const word = document.querySelectorAll('.word');
+speakerEl.setAttribute('id', 'speaker')
+speakerEl.src = '/assets/speaker.svg';
+
 const tts = window.speechSynthesis;
 let incr = 0;
 const randomWordsArr = [];
@@ -31,37 +38,36 @@ function shuffle(array) {
   return array;
 }
 
+const incrementer = () => {
+  return incr += 1;
+};
 
+const resetQuestion = () => {
+  sentContainer.innerHTML = ''
+}
 
+const iterateEachWord = (i) => {
+  const questions = [...data];
+  //console.log(questions[i])
+  avatarImg.src = questions[i].pic;
+  sentContainer.appendChild(speakerEl)
+  questions[i].phraseByWord.map((word) => {
+    const wordEl = document.createElement('button');
+    wordEl.innerText = word.word;
+    wordEl.setAttribute('class', 'word-item')
+    wordEl.setAttribute('value', word.word)
+    sentContainer.appendChild(wordEl)
+  });
+};
 
-board.innerHTML =
-  `
-  <div class="target-lang-container">
-    <img src=${data[incr].pic} />
-    <div class="speech-bubble">
-      <div class="sent-container">
-        <img id="speaker" src="/assets/speaker.svg" />
-      ${data[incr].phraseByWord.map((word) => {
-    return `<button value=${word.word} class="word-item ${word.highlighted && 'highlighted'}">${word.word}</button>`;
-  }).join(' ')}
-      </div>
-    </div>
-  </div>
-  <div class="answer-field">
-    ${answer.map((ans) => (
-      `<button value=${ans} class="word">${ans}</button>`
-    )).join(' ')}
-  </div>
-  <div class="random-words-field">
-    ${shuffle(randomWordsArr).map((item) => (
-    `<button value=${item} class="word">${item}</button>`
-  )).join(' ')
-  }
-  </div>
-  `;
+const getNewQuestion = (i) => {
+  const questions = [...data];
+  //console.log(questions[i])
+  avatarImg.src = questions[i].pic;
+  resetQuestion();
+  iterateEachWord(i)
+};
 
-
-const speaker = document.getElementById('speaker');
 
 const speak = (phrase, lang) => {
   let toSpeak = new SpeechSynthesisUtterance(phrase);
@@ -69,28 +75,37 @@ const speak = (phrase, lang) => {
   tts.speak(toSpeak);
 };
 
-speaker.addEventListener('click', () => {
+speakerEl.addEventListener('click', () => {
   speak(data[incr].frPhrase, 'fr-FR');
 });
 
-const wordItems = document.querySelectorAll('.word-item');
-const word = document.querySelectorAll('.word');
-
 //console.log(wordItems)
 
-wordItems.forEach(wordItem => wordItem.addEventListener('mouseover', (e) => {
-  //console.log(e.target.value);
-  speak(e.target.value, 'fr-FR');
-}));
+
 
 function answerFunc(val) {
-  return answer.push(val)
+  return answer.push(val);
 }
-
-
 
 word.forEach(item => item.addEventListener('click', (e) => {
   answerFunc(e.target.value);
   console.log(e.target.value);
-}))
+}));
+
+window.addEventListener('keydown', (key) => {
+  if (key.keyCode == "39") {
+    let i = incrementer();
+    getNewQuestion(i);
+    console.log(i);
+  }
+});
+
+const wordItems = document.querySelectorAll('.word-item');
+
+wordItems.forEach(wordItem => wordItem.addEventListener('mouseover', (e) => {
+  console.log(e.target.value);
+  speak(e.target.value, 'fr-FR');
+}));
+
+
 
