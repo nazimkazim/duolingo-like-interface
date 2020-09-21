@@ -1,11 +1,11 @@
 window.addEventListener('load', function () {
-  const board = document.querySelector('.board');
   const avatarImg = document.querySelector('.avatar-img');
   const sentContainer = document.querySelector('.sent-container');
   const speakerEl = document.createElement('img');
-  const word = document.querySelectorAll('.word');
+  const randomWordsField = document.querySelector('.random-words-field');
   speakerEl.setAttribute('id', 'speaker');
   speakerEl.src = '/assets/speaker.svg';
+
 
   const tts = window.speechSynthesis;
   let incr = 0;
@@ -13,12 +13,21 @@ window.addEventListener('load', function () {
   const answer = [];
 
 
+
+
+
   data.map((obj) => {
     splittedStr = obj.engPhrase.split(" ");
     return randomWordsArr.push(...splittedStr);
   });
+  console.log(randomWordsArr);
 
-  //console.log('line 11', randomWordsArr);
+  randomWordsArr.map((randWord) => {
+    const el = document.createElement('span');
+    el.textContent = randWord;
+    el.className = 'word';
+    randomWordsField.appendChild(el);
+  });
 
   function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -35,13 +44,10 @@ window.addEventListener('load', function () {
       array[currentIndex] = array[randomIndex];
       array[randomIndex] = temporaryValue;
     }
-
     return array;
   }
 
-  const incrementer = () => {
-    return incr += 1;
-  };
+
 
   const resetQuestion = () => {
     sentContainer.innerHTML = '';
@@ -89,15 +95,18 @@ window.addEventListener('load', function () {
 
   window.addEventListener('keydown', (key) => {
     if (key.keyCode == "39") {
-      incr += 1
+      incr += 1;
       getNewQuestion(incr);
     }
     if (key.keyCode == "37") {
-      incr -= 1
+      incr -= 1;
       getNewQuestion(incr);
     }
   });
 });
+
+
+
 
 
 
