@@ -3,6 +3,7 @@ window.addEventListener('load', function () {
   const sentContainer = document.querySelector('.sent-container');
   const speakerEl = document.createElement('img');
   const randomWordsField = document.querySelector('.random-words-field');
+  const answerField = document.querySelector('.answer-field');
   speakerEl.setAttribute('id', 'speaker');
   speakerEl.src = '/assets/speaker.svg';
 
@@ -10,24 +11,33 @@ window.addEventListener('load', function () {
   const tts = window.speechSynthesis;
   let incr = 0;
   const randomWordsArr = [];
-  const answer = [];
-
-
-
 
 
   data.map((obj) => {
     splittedStr = obj.engPhrase.split(" ");
     return randomWordsArr.push(...splittedStr);
   });
-  console.log(randomWordsArr);
+  //console.log(randomWordsArr);
 
   randomWordsArr.map((randWord) => {
-    const el = document.createElement('span');
+    const el = document.createElement('button');
     el.textContent = randWord;
     el.className = 'word';
+    el.setAttribute('value', randWord)
     randomWordsField.appendChild(el);
   });
+
+  const wordList = document.querySelectorAll('.word');
+  //console.log(wordList);
+
+  wordList.forEach(w => {
+    w.addEventListener('click', (e) => {
+      console.log(e.target.value)
+      answerField.removeChild(1)
+    })
+  });
+
+
 
   function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -46,6 +56,7 @@ window.addEventListener('load', function () {
     }
     return array;
   }
+
 
 
 
@@ -104,6 +115,8 @@ window.addEventListener('load', function () {
     }
   });
 });
+
+
 
 
 
