@@ -19,7 +19,7 @@ window.addEventListener('load', function () {
   });
   //console.log(randomWordsArr);
 
-  randomWordsArr.map((randWord) => {
+  shuffle(randomWordsArr).map((randWord) => {
     const el = document.createElement('button');
     el.textContent = randWord;
     el.className = 'word';
@@ -27,31 +27,62 @@ window.addEventListener('load', function () {
     randomWordsField.appendChild(el);
   });
 
-  const wordList = document.querySelectorAll('.word');
-  //console.log(wordList);
+  const randomWordsList = document.querySelectorAll('.word');
+  //console.log(randomWordsList);
 
-  wordList.forEach(w => {
+  randomWordsList.forEach(w => {
+    // create empty array to push list nodes value
+    let wordsListRandomArr = [];
     w.addEventListener('click', (e) => {
-      let wordsList = [];
+      // define value we click
       let val = e.target.value;
+      // get list nodes of random words field
       let listNodes = randomWordsField.childNodes;
+      // make array of nodes
       let listNodesArr = Array.from(listNodes);
+      // iterate nodes and push values to wordsListRandomArr
       listNodesArr.map((el) => {
         //console.log(el.value)
-        wordsList.push(el.value);
+        wordsListRandomArr.push(el.value);
       });
-      //console.log(wordsList.indexOf(val));
-      let idx = wordsList.indexOf(val);
+
+      console.log(wordsListRandomArr);
+
+      // get index of clicked word
+      let idx = wordsListRandomArr.indexOf(val);
+      // remove words from answer field by index
       randomWordsField.removeChild(randomWordsField.childNodes[idx]);
-      let appendedWord = wordsList[idx]
+      //wordsListRandomArr.splice(idx, 1)
+      console.log(wordsListRandomArr);
+      // get word that is going to append to answer field 
+      let appendedWord = wordsListRandomArr[idx];
       //console.log(appendedWord)
-      console.log(answerField)
+      //console.log(answerField)
+      // create button el
       let el = document.createElement("button");
-      el.className = 'word'
-      el.innerText = appendedWord;                              
+      // assign class
+      el.className = 'word-answer';
+
+      el.setAttribute('value', val);
+      // assign text
+      el.innerText = appendedWord;
+      // append word to answer field                              
       answerField.appendChild(el);
+
+      /* let answerWordsList = document.querySelectorAll('.word-answer');
+      answerWordsList.forEach(w => {
+        w.addEventListener('click', (e) => {
+          let val = e.target.value;
+          wordsListRandomArr.push(val)
+          console.log(wordsListRandomArr);
+        });
+      }); */
     });
   });
+
+
+
+
 
   function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
