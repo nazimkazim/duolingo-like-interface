@@ -23,7 +23,7 @@ window.addEventListener('load', function () {
     const el = document.createElement('button');
     el.textContent = randWord;
     el.className = 'word';
-    el.setAttribute('value', randWord)
+    el.setAttribute('value', randWord);
     randomWordsField.appendChild(el);
   });
 
@@ -32,12 +32,19 @@ window.addEventListener('load', function () {
 
   wordList.forEach(w => {
     w.addEventListener('click', (e) => {
-      console.log(e.target.value)
-      answerField.removeChild(1)
-    })
+      let wordsList = [];
+      let val = e.target.value;
+      let listNodes = randomWordsField.childNodes;
+      let listNodesArr = Array.from(listNodes).slice(1,);
+      listNodesArr.map((el) => {
+        //console.log(el.value)
+        wordsList.push(el.value)
+      });
+      //console.log(wordsList.indexOf(val));
+      let idx = wordsList.indexOf(val);
+      randomWordsField.removeChild(randomWordsField.childNodes[idx + 1]);
+    });
   });
-
-
 
   function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
