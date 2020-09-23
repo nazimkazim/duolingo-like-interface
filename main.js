@@ -43,6 +43,13 @@ window.addEventListener('load', function () {
       //console.log(wordsList.indexOf(val));
       let idx = wordsList.indexOf(val);
       randomWordsField.removeChild(randomWordsField.childNodes[idx]);
+      let appendedWord = wordsList[idx]
+      //console.log(appendedWord)
+      console.log(answerField)
+      let el = document.createElement("button");
+      el.className = 'word'
+      el.innerText = appendedWord;                              
+      answerField.appendChild(el);
     });
   });
 
