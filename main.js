@@ -35,14 +35,14 @@ window.addEventListener('load', function () {
       let wordsList = [];
       let val = e.target.value;
       let listNodes = randomWordsField.childNodes;
-      let listNodesArr = Array.from(listNodes).slice(1,);
+      let listNodesArr = Array.from(listNodes);
       listNodesArr.map((el) => {
         //console.log(el.value)
-        wordsList.push(el.value)
+        wordsList.push(el.value);
       });
       //console.log(wordsList.indexOf(val));
       let idx = wordsList.indexOf(val);
-      randomWordsField.removeChild(randomWordsField.childNodes[idx + 1]);
+      randomWordsField.removeChild(randomWordsField.childNodes[idx]);
     });
   });
 
@@ -80,6 +80,9 @@ window.addEventListener('load', function () {
       let wordEl = document.createElement('button');
       wordEl.innerText = word.word;
       wordEl.setAttribute('class', 'word-item');
+      if (word.highlighted) {
+        wordEl.setAttribute('class', 'word-item highlighted');
+      }
       wordEl.setAttribute('value', word.word);
       sentContainer.appendChild(wordEl);
     });
@@ -93,7 +96,7 @@ window.addEventListener('load', function () {
     iterateEachWord(i);
     const wordItems = document.querySelectorAll('.word-item');
     wordItems.forEach(wordItem => wordItem.addEventListener('mouseover', (e) => {
-      console.log(e.target.value);
+      //console.log(e.target.value);
       speak(e.target.value, 'fr-FR');
     }));
   };
