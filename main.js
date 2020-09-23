@@ -69,20 +69,27 @@ window.addEventListener('load', function () {
       // append word to answer field                              
       answerField.appendChild(el);
 
-      /* let answerWordsList = document.querySelectorAll('.word-answer');
+
+      let answerWordsList = document.querySelectorAll('.word-answer');
       answerWordsList.forEach(w => {
         w.addEventListener('click', (e) => {
           let val = e.target.value;
-          wordsListRandomArr.push(val)
+          wordsListRandomArr.push(val);
+          let el = document.createElement("button");
+          // assign class
+          el.className = 'word';
+
+          el.setAttribute('value', val);
+          // assign text
+          el.innerText = appendedWord;
+          // append word to answer field                              
+          randomWordsField.appendChild(el);
           console.log(wordsListRandomArr);
         });
-      }); */
+      });
+
     });
   });
-
-
-
-
 
   function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -101,9 +108,6 @@ window.addEventListener('load', function () {
     }
     return array;
   }
-
-
-
 
   const resetQuestion = () => {
     sentContainer.innerHTML = '';
