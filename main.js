@@ -11,6 +11,8 @@ window.addEventListener('load', function () {
   const tts = window.speechSynthesis;
   let incr = 0;
   const randomWordsArr = [];
+  const randomWordsArrDom = [];
+  //let answerWordsArrIsFull = false;
 
 
   data.map((obj) => {
@@ -24,15 +26,87 @@ window.addEventListener('load', function () {
     el.textContent = randWord;
     el.className = 'word';
     el.setAttribute('value', randWord);
+    randomWordsArrDom.push(el);
     randomWordsField.appendChild(el);
   });
 
-  const randomWordsList = document.querySelectorAll('.word');
+  //const randomWordsList = document.querySelectorAll('.word');
   //console.log(randomWordsList);
 
-  randomWordsList.forEach(w => {
+  //console.log(randomWordsArrDom);
+
+  randomWordsArrDom.forEach(w => {
+    randomWordsField.appendChild(w);
+  });
+
+  function randomEls() {
+    let arr = Array.from(randomWordsField.children);
+    arr.forEach(w => {
+      //console.log(w)
+      w.addEventListener('click', (e) => {
+        answerField.appendChild(e.target);
+        //console.log(e.target)
+        let index = randomWordsArrDom.indexOf(e.target);
+        //console.log(index)
+        //randomWordsArrDom.splice(index, 1);
+        //console.log(randomWordsArrDom)
+        /* if (answerWordsArrDom.length > randomWordsArr.length || answerWordsArrDom.includes(e.target)) {
+          answerWordsArrIsFull = true;
+        } */
+
+        /* if (!answerWordsArrIsFull) {
+          answerWordsArrDom.push(e.target);
+        } */
+        //console.log(answerWordsArrDom);
+        //console.log(randomWordsArrDom);
+        arr.splice(index, 1);
+        upd();
+        console.log(randomWordsField.children);
+      });
+    });
+  }
+
+  randomEls()
+
+
+  /* answerWordsArrDom.forEach(w => {
+    showWords();
+    console.log('hey');
+    w.addEventListener('click', (e) => {
+      console.log(e.target);
+      console.log('hhh');
+      let index = answerWordsArrDom.indexOf(e.target);
+      answerWordsArrDom.splice(index, 1);
+      randomWordsField.appendChild(e.target);
+    });
+  }); */
+
+  //console.log(answerField.children.length) 
+  function upd() {
+    let arr = Array.from(answerField.children);
+    console.log(arr);
+    arr.map(w => {
+      w.addEventListener('click', (e) => {
+        console.log(e.target);
+        let index = arr.indexOf(e.target);
+        randomWordsField.appendChild(e.target);
+        arr.splice(index, 1);
+      });
+    });
+    if (arr.length === 1) {
+      console.log('empty')
+      arr.length = 0
+      answerField.children.innerHTML = ''
+      randomEls()
+      console.log(arr)
+    }
+  }
+
+
+  /* randomWordsList.forEach(w => {
     // create empty array to push list nodes value
     let wordsListRandomArr = [];
+    let anwersArr = [];
     w.addEventListener('click', (e) => {
       // define value we click
       let val = e.target.value;
@@ -41,21 +115,32 @@ window.addEventListener('load', function () {
       // make array of nodes
       let listNodesArr = Array.from(listNodes);
       // iterate nodes and push values to wordsListRandomArr
-      listNodesArr.map((el) => {
+      listNodesArr.map((el, index) => {
         //console.log(el.value)
-        wordsListRandomArr.push(el.value);
+        wordsListRandomArr.push({ val: el.value, idx: index });
+        //console.log(wordsListRandomArr);
       });
 
       console.log(wordsListRandomArr);
 
+      // get index func
+      function getVal(v) {
+        let val = wordsListRandomArr.filter(obj => {
+          return obj.val === v;
+        });
+
+        return val[0].idx;
+      }
+
       // get index of clicked word
-      let idx = wordsListRandomArr.indexOf(val);
+      let idx = getVal(val);
+      console.log(idx);
       // remove words from answer field by index
       randomWordsField.removeChild(randomWordsField.childNodes[idx]);
       //wordsListRandomArr.splice(idx, 1)
       console.log(wordsListRandomArr);
       // get word that is going to append to answer field 
-      let appendedWord = wordsListRandomArr[idx];
+      let appendedWord = wordsListRandomArr[idx].val;
       //console.log(appendedWord)
       //console.log(answerField)
       // create button el
@@ -69,6 +154,9 @@ window.addEventListener('load', function () {
       // append word to answer field                              
       answerField.appendChild(el);
 
+      anwersArr.push({ val: val, idx: idx })
+
+      console.log(anwersArr)
 
       let answerWordsList = document.querySelectorAll('.word-answer');
       answerWordsList.forEach(w => {
@@ -89,7 +177,7 @@ window.addEventListener('load', function () {
       });
 
     });
-  });
+  }); */
 
   function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
