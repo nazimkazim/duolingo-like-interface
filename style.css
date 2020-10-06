@@ -246,7 +246,8 @@
   text-transform: uppercase;
 }
 
-.footer-items-container .item span {
+.footer-items-container .item button {
+  position: relative;
   border: 2px solid #e5e5e5;
   border-radius: 16px;
   font-weight: 700;
@@ -254,4 +255,16 @@
   color: #9d9d9d;
   padding: 10px 40px;
   text-transform: uppercase;
+  cursor: pointer;
 }
+
+.enabled-check-button {
+  position: relative;
+  background-color: #58CC02;
+  color: white !important;
+  border: 1px solid #61B800 !important;
+  border-bottom: 4px solid #61B800 !important;
+  overflow: hidden;
+}
+
+

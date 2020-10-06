@@ -4,6 +4,8 @@ window.addEventListener('load', function () {
   const speakerEl = document.createElement('img');
   const randomWordsField = document.querySelector('.random-words-field');
   const answerField = document.querySelector('.answer-field');
+  let = checkButton = document.querySelector('.check-button');
+  checkButton.disabled = true;
   speakerEl.setAttribute('id', 'speaker');
   speakerEl.src = '/assets/speaker.svg';
 
@@ -12,7 +14,12 @@ window.addEventListener('load', function () {
   let incr = 0;
   const randomWordsArr = [];
   const randomWordsArrDom = [];
+  let answerFieldWordsArr = [];
   //let answerWordsArrIsFull = false;
+
+  checkButton.addEventListener('click', () => {
+    console.log('clicked');
+  });
 
 
   data.map((obj) => {
@@ -59,14 +66,14 @@ window.addEventListener('load', function () {
         } */
         //console.log(answerWordsArrDom);
         //console.log(randomWordsArrDom);
-        arr.splice(index, 1);
         upd();
+        arr.splice(index, 1);
         console.log(randomWordsField.children);
       });
     });
   }
 
-  randomEls()
+  randomEls();
 
 
   /* answerWordsArrDom.forEach(w => {
@@ -83,24 +90,37 @@ window.addEventListener('load', function () {
 
   //console.log(answerField.children.length) 
   function upd() {
-    let arr = Array.from(answerField.children);
-    console.log(arr);
-    arr.map(w => {
+    answerFieldWordsArr = Array.from(answerField.children);
+    console.log(answerFieldWordsArr);
+
+    answerFieldWordsArr.map(w => {
       w.addEventListener('click', (e) => {
         console.log(e.target);
-        let index = arr.indexOf(e.target);
+        let index = answerFieldWordsArr.indexOf(e.target);
         randomWordsField.appendChild(e.target);
-        arr.splice(index, 1);
+        answerFieldWordsArr.splice(index, 1);
+        console.log(answerFieldWordsArr.length);
       });
     });
-    if (arr.length === 1) {
+
+    if (answerFieldWordsArr.length > 0) {
+      checkButton.disabled = false;
+      checkButton.classList.add("enabled-check-button");
+    }
+
+    if (answerFieldWordsArr.length === 0) {
+      checkButton.disabled = true;
+      checkButton.classList.remove("enabled-check-button");
+    }
+    /* if (answerFieldWordsArr.length === 1) {
       console.log('empty')
-      arr.length = 0
+      answerFieldWordsArr.length = 0
       answerField.children.innerHTML = ''
       randomEls()
-      console.log(arr)
-    }
+      console.log(answerFieldWordsArr)
+    } */
   }
+
 
 
   /* randomWordsList.forEach(w => {
@@ -218,6 +238,8 @@ window.addEventListener('load', function () {
     });
   };
 
+  iterateEachWord(0);
+
   const getNewQuestion = (i) => {
     const questions = [...data];
     //console.log(questions[i])
@@ -230,6 +252,8 @@ window.addEventListener('load', function () {
       speak(e.target.value, 'fr-FR');
     }));
   };
+
+
 
 
   const speak = (phrase, lang) => {
