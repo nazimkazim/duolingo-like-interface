@@ -43,7 +43,9 @@ window.addEventListener('load', function () {
   console.log('random words dom', randomWordsArrDom);
 
   function randomEls() {
+    // get arr of words in random words field
     let arr = Array.from(randomWordsField.children);
+    // iterate and add them to the answer field on click
     arr.forEach(w => {
       //console.log(w)
       w.addEventListener('click', (e) => {
