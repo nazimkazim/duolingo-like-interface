@@ -42,12 +42,16 @@ window.addEventListener('load', function () {
 
   //console.log(randomWordsArrDom);
 
+  // append random words to the randomWordsField
   randomWordsArrDom.forEach(w => {
     randomWordsField.appendChild(w);
   });
 
+  // this function is responsible for adding words to the answer field
   function randomEls() {
+    // get arr of words in random words field
     let arr = Array.from(randomWordsField.children);
+    // iterate and add them to the answer field on click
     arr.forEach(w => {
       //console.log(w)
       w.addEventListener('click', (e) => {
