@@ -291,6 +291,7 @@
   padding: 10px 40px;
   text-transform: uppercase;
   cursor: pointer;
+  outline: none;
 }
 
 .enabled-check-button {
@@ -300,4 +301,8 @@
   border: 1px solid #61B800 !important;
   border-bottom: 4px solid #61B800 !important;
   overflow: hidden;
+}
+
+.disabledCheckButton {
+  background-color: #E5E5E5;
 }

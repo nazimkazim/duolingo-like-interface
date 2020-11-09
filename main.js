@@ -4,10 +4,10 @@ window.addEventListener('load', function () {
   const speakerEl = document.createElement('img');
   const randomWordsField = document.querySelector('.random-words-field');
   const answerField = document.querySelector('.answer-field');
-  let = checkButton = document.querySelector('.check-button');
+  let checkButton = document.querySelector('.check-button');
   checkButton.disabled = true;
   if (checkButton.disabled) {
-    checkButton.style.backgroundColor = 'rgb(229,229,229)'
+    checkButton.classList.add('disabledCheckButton');
   }
   speakerEl.setAttribute('id', 'speaker');
   speakerEl.src = '/assets/speaker.svg';
@@ -18,7 +18,6 @@ window.addEventListener('load', function () {
   let randomWordsArr = [];
   let randomWordsArrDom = [];
   let answerFieldWordsArr = [];
-  let copy_array = [];
   const widthHeightArr = [];
   var index = 0;
   //let answerWordsArrIsFull = false;
@@ -27,18 +26,11 @@ window.addEventListener('load', function () {
 
 
   data.map((obj) => {
-    // console.log(obj)
     splittedStr = obj.engPhrase.split(" ");
-    // console.log(splittedStr)
-    // console.log(randomWordsArr);
-    // console.log(randomWordsArrDom)
     copy_array = randomWordsArr;
-
     return randomWordsArr.push(...splittedStr);
 
   });
-  // console.log(randomWordsArr);
-  // console.log('random words arr', randomWordsArr)
 
   shuffle(randomWordsArr).map((randWord) => {
 
@@ -66,24 +58,23 @@ window.addEventListener('load', function () {
     parent_button.style.height = childHeight + "px";
     parent_button.style.width = childWidth + "px";
     widthHeightArr[index] = [childHeight, childWidth];
-    /* added.style.height = childHeight + "px"
-    added.style.width = childWidth + "px" */
     index++;
-
-    // randomWordsField.appendChild(ek);
   });
 
   randomWordsArrDom.forEach(w => {
     randomWordsField.appendChild(w);
   });
 
-  //console.log(widthHeightArr)
-
   //function to push target into answer and changing eventlistner
   function pushIntoAnswer(e) {
     index = e.target.id;
     //console.log(e.target);
     answerFieldWordsArr.push(e.target);
+    if (answerFieldWordsArr.length > 0) {
+      checkButton.disabled = false;
+      checkButton.classList.remove('disabledCheckButton');
+      checkButton.classList.add('enabled-check-button');
+    }
     answerField.appendChild(e.target);
     randomWordsArr[index] = "";
     //console.log(e.target);
@@ -102,6 +93,11 @@ window.addEventListener('load', function () {
     parentDiv.appendChild(e.target);
     randomWordsArr[index] = e.target.value;
     answerFieldWordsArr.pop();
+    if (answerFieldWordsArr.length <= 0) {
+      checkButton.disabled = true;
+      checkButton.classList.add('disabledCheckButton');
+      checkButton.classList.remove('enabled-check-button');
+    }
 
     e.target.removeEventListener('click', removingElement);
     e.target.classList.add('word');
@@ -119,13 +115,11 @@ window.addEventListener('load', function () {
 
   });
 
-  //map answer array and add eventlister
+  //map answer array and add eventlistener
   answerFieldWordsArr = Array.from(answerField.children);
   answerFieldWordsArr.map(w => {
     w.addEventListener('click', removingElement);
   });
-
-
 
   function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -168,6 +162,16 @@ window.addEventListener('load', function () {
 
   iterateEachWord(0);
 
+  // Check answers 
+  const checkAnswer = () => {
+    console.log('check answer')
+    console.log(answerFieldWordsArr)
+    console.log(randomWordsArr)
+  }
+
+  // attach event listener to check button
+  checkButton.addEventListener('click', checkAnswer)
+
   const getNewQuestion = (i) => {
     const questions = [...data];
     //console.log(questions[i])
@@ -180,9 +184,6 @@ window.addEventListener('load', function () {
       speak(e.target.value, 'fr-FR');
     }));
   };
-
-
-
 
   const speak = (phrase, lang) => {
     let toSpeak = new SpeechSynthesisUtterance(phrase);
