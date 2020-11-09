@@ -16,6 +16,7 @@ window.addEventListener('load', function () {
   let randomWordsArrDom = [];
   let answerFieldWordsArr = [];
   let copy_array = [];
+  const widthHeightArr = [];
   var index = 0;
   //let answerWordsArrIsFull = false;
 
@@ -37,6 +38,7 @@ window.addEventListener('load', function () {
   // console.log('random words arr', randomWordsArr)
 
   shuffle(randomWordsArr).map((randWord) => {
+
     //placeholder
     const parent_button = document.createElement('div');
     parent_button.className = 'placeholder';
@@ -60,6 +62,9 @@ window.addEventListener('load', function () {
     var childWidth = button_element.offsetWidth * 1.5;
     parent_button.style.height = childHeight + "px";
     parent_button.style.width = childWidth + "px";
+    widthHeightArr[index] = [childHeight, childWidth];
+    /* added.style.height = childHeight + "px"
+    added.style.width = childWidth + "px" */
     index++;
 
     // randomWordsField.appendChild(ek);
@@ -69,17 +74,21 @@ window.addEventListener('load', function () {
     randomWordsField.appendChild(w);
   });
 
+  //console.log(widthHeightArr)
+
   //function to push target into answer and changing eventlistner
   function pushIntoAnswer(e) {
     index = e.target.id;
-    console.log(e.target);
+    //console.log(e.target);
     answerFieldWordsArr.push(e.target);
     answerField.appendChild(e.target);
     randomWordsArr[index] = "";
-    console.log(e.target);
+    //console.log(e.target);
     e.target.removeEventListener('click', pushIntoAnswer);
     e.target.classList.remove('word');
     e.target.classList.add('added');
+    e.target.style.height = widthHeightArr[index][0] + 'px';
+    e.target.style.width = widthHeightArr[index][1] + 'px';
     e.target.addEventListener('click', removingElement);
   }
 
@@ -94,6 +103,8 @@ window.addEventListener('load', function () {
     e.target.removeEventListener('click', removingElement);
     e.target.classList.add('word');
     e.target.classList.remove('added');
+    e.target.style.height = widthHeightArr[index][0] - 3 + 'px';
+    e.target.style.width = widthHeightArr[index][1] - 3 + 'px';
     e.target.addEventListener('click', pushIntoAnswer);
   }
 
