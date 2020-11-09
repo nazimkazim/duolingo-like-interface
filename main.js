@@ -160,13 +160,21 @@ window.addEventListener('load', function () {
     });
   };
 
-  iterateEachWord(0);
+  iterateEachWord(incr);
 
   // Check answers 
   const checkAnswer = () => {
-    console.log('check answer')
-    console.log(answerFieldWordsArr)
-    console.log(randomWordsArr)
+    let answerArr = []
+    answerFieldWordsArr.forEach((item) => {
+      let val = item.value;
+      answerArr.push(val)
+    })
+    let ansStr = answerArr.join(' ')
+    if (ansStr === data[incr].engPhrase) {
+      console.log('correct')
+    } else {
+      console.log('false')
+    }
   }
 
   // attach event listener to check button
