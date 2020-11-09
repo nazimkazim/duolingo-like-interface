@@ -6,6 +6,9 @@ window.addEventListener('load', function () {
   const answerField = document.querySelector('.answer-field');
   let = checkButton = document.querySelector('.check-button');
   checkButton.disabled = true;
+  if (checkButton.disabled) {
+    checkButton.style.backgroundColor = 'rgb(229,229,229)'
+  }
   speakerEl.setAttribute('id', 'speaker');
   speakerEl.src = '/assets/speaker.svg';
 
