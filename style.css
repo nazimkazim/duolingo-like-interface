@@ -182,17 +182,46 @@
 }
 
 .word {
-  border: 2px solid #e5e5e5;
   cursor: pointer;
   padding: 10px;
+  height: 100%;
+  width: 100%;
+  border-radius: 15px;
+  background-color: white;
+  /* margin-bottom: 5px; */
+  /* background-color: transparent; */
+  outline: none;
+  font-size: 16px;
+  border: none;
+}
+
+.added {
+  cursor: pointer;
+  padding: 10px;
+  height: 100%;
+  width: 40px;
+  border-radius: 15px;
+  background-color: blue;
+  /* margin-bottom: 5px; */
+  /* background-color: transparent; */
+  outline: none;
+  font-size: 16px;
+  border: none;
+}
+
+.placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #e5e5e5;
+  cursor: pointer;
   margin-right: 5px;
   border-radius: 15px;
   margin-bottom: 5px;
-  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0.199);
   outline: none;
   font-size: 16px;
 }
-
 .word-answer {
   border: 2px solid #e5e5e5;
   cursor: pointer;
@@ -266,5 +295,3 @@
   border-bottom: 4px solid #61B800 !important;
   overflow: hidden;
 }
-
-

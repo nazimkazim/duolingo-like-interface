@@ -12,80 +12,106 @@ window.addEventListener('load', function () {
 
   const tts = window.speechSynthesis;
   let incr = 0;
-  const randomWordsArr = [];
-  const randomWordsArrDom = [];
+  let randomWordsArr = [];
+  let randomWordsArrDom = [];
   let answerFieldWordsArr = [];
+  let copy_array = [];
+  var index = 0;
   //let answerWordsArrIsFull = false;
 
-  console.log('random words arr', randomWordsArr)
+  // console.log('random words arr', randomWordsArr)
 
-  
+
   data.map((obj) => {
+    // console.log(obj)
     splittedStr = obj.engPhrase.split(" ");
+    // console.log(splittedStr)
+    // console.log(randomWordsArr);
+    // console.log(randomWordsArrDom)
+    copy_array = randomWordsArr;
+
     return randomWordsArr.push(...splittedStr);
+
   });
-  //console.log(randomWordsArr);
-  console.log('random words arr', randomWordsArr)
+  // console.log(randomWordsArr);
+  // console.log('random words arr', randomWordsArr)
 
   shuffle(randomWordsArr).map((randWord) => {
-    const el = document.createElement('button');
-    el.textContent = randWord;
-    el.className = 'word';
-    el.setAttribute('value', randWord);
-    randomWordsArrDom.push(el);
-    randomWordsField.appendChild(el);
+    //placeholder
+    const parent_button = document.createElement('div');
+    parent_button.className = 'placeholder';
+    parent_button.id = index;
+
+
+    //random word
+    randomWordsField.appendChild(parent_button);
+    const button_element = document.createElement('button');
+
+    button_element.textContent = randWord;
+    button_element.className = 'word';
+    button_element.id = index;
+    button_element.setAttribute('value', randWord);
+
+    var current_placeholder = document.getElementById(index);
+    current_placeholder.appendChild(button_element);
+
+    //setting height and width of parent element equal to child element
+    var childHeight = button_element.offsetHeight * 1.5;
+    var childWidth = button_element.offsetWidth * 1.5;
+    parent_button.style.height = childHeight + "px";
+    parent_button.style.width = childWidth + "px";
+    index++;
+
+    // randomWordsField.appendChild(ek);
   });
 
   randomWordsArrDom.forEach(w => {
     randomWordsField.appendChild(w);
   });
 
-  console.log('random words dom', randomWordsArrDom);
-
-  function randomEls() {
-    // get arr of words in random words field
-    let arr = Array.from(randomWordsField.children);
-    // iterate and add them to the answer field on click
-    arr.forEach(w => {
-      //console.log(w)
-      w.addEventListener('click', (e) => {
-        answerField.appendChild(e.target);
-        //console.log(e.target)
-        let index = randomWordsArrDom.indexOf(e.target);
-        upd();
-        arr.splice(index, 1);
-        console.log(randomWordsField.children);
-      });
-    });
+  //function to push target into answer and changing eventlistner
+  function pushIntoAnswer(e) {
+    index = e.target.id;
+    console.log(e.target);
+    answerFieldWordsArr.push(e.target);
+    answerField.appendChild(e.target);
+    randomWordsArr[index] = "";
+    console.log(e.target);
+    e.target.removeEventListener('click', pushIntoAnswer);
+    e.target.classList.remove('word');
+    e.target.classList.add('added');
+    e.target.addEventListener('click', removingElement);
   }
 
-  randomEls();
+  //function to push answer into random array and changing eventlistner
+  function removingElement(e) {
+    let index = e.target.id;
+    let parentDiv = randomWordsField.children[index];
+    parentDiv.appendChild(e.target);
+    randomWordsArr[index] = e.target.value;
+    answerFieldWordsArr.pop();
 
-  //console.log(answerField.children.length) 
-  function upd() {
-    answerFieldWordsArr = Array.from(answerField.children);
-    console.log(answerFieldWordsArr);
-
-    answerFieldWordsArr.map(w => {
-      w.addEventListener('click', (e) => {
-        console.log(e.target);
-        let index = answerFieldWordsArr.indexOf(e.target);
-        randomWordsField.appendChild(e.target);
-        answerFieldWordsArr.splice(index, 1);
-        console.log(answerFieldWordsArr.length);
-      });
-    });
-
-    if (answerFieldWordsArr.length > 0) {
-      checkButton.disabled = false;
-      checkButton.classList.add("enabled-check-button");
-    }
-
-    if (answerFieldWordsArr.length === 0) {
-      checkButton.disabled = true;
-      checkButton.classList.remove("enabled-check-button");
-    }
+    e.target.removeEventListener('click', removingElement);
+    e.target.classList.add('word');
+    e.target.classList.remove('added');
+    e.target.addEventListener('click', pushIntoAnswer);
   }
+
+  //map random array and add eventlister
+  let arr = Array.from(randomWordsField.children);
+  let childArr = arr.map((arr) => arr.children[0]);
+  childArr.forEach(w => {
+    w.addEventListener('click', pushIntoAnswer);
+
+  });
+
+  //map answer array and add eventlister
+  answerFieldWordsArr = Array.from(answerField.children);
+  answerFieldWordsArr.map(w => {
+    w.addEventListener('click', removingElement);
+  });
+
+
 
   function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -167,14 +193,3 @@ window.addEventListener('load', function () {
     }
   });
 });
-
-
-
-
-
-
-
-
-
-
-
