@@ -4,11 +4,19 @@ window.addEventListener('load', function () {
   const speakerEl = document.createElement('img');
   const randomWordsField = document.querySelector('.random-words-field');
   const answerField = document.querySelector('.answer-field');
+  const footer = document.querySelector('.footer');
+  const continueButton = document.querySelector('.continue-button');
+
+  const winFooter = document.querySelector('.win-footer');
+  winFooter.style.display = 'none';
+
   let checkButton = document.querySelector('.check-button');
   checkButton.disabled = true;
+
   if (checkButton.disabled) {
     checkButton.classList.add('disabledCheckButton');
   }
+
   speakerEl.setAttribute('id', 'speaker');
   speakerEl.src = '/assets/speaker.svg';
 
@@ -18,6 +26,7 @@ window.addEventListener('load', function () {
   let randomWordsArr = [];
   let randomWordsArrDom = [];
   let answerFieldWordsArr = [];
+  let answerArr = [];
   const widthHeightArr = [];
   var index = 0;
   //let answerWordsArrIsFull = false;
@@ -164,21 +173,23 @@ window.addEventListener('load', function () {
 
   // Check answers 
   const checkAnswer = () => {
-    let answerArr = []
+    console.log(answerArr);
     answerFieldWordsArr.forEach((item) => {
       let val = item.value;
-      answerArr.push(val)
-    })
-    let ansStr = answerArr.join(' ')
+      answerArr.push(val);
+    });
+    let ansStr = answerArr.join(' ');
     if (ansStr === data[incr].engPhrase) {
-      console.log('correct')
+      console.log('correct');
+      footer.style.display = 'none';
+      winFooter.style.display = 'flex';
     } else {
-      console.log('false')
+      console.log('false');
     }
-  }
+  };
 
   // attach event listener to check button
-  checkButton.addEventListener('click', checkAnswer)
+  checkButton.addEventListener('click', checkAnswer);
 
   const getNewQuestion = (i) => {
     const questions = [...data];
@@ -188,7 +199,6 @@ window.addEventListener('load', function () {
     iterateEachWord(i);
     const wordItems = document.querySelectorAll('.word-item');
     wordItems.forEach(wordItem => wordItem.addEventListener('mouseover', (e) => {
-      //console.log(e.target.value);
       speak(e.target.value, 'fr-FR');
     }));
   };
@@ -205,7 +215,20 @@ window.addEventListener('load', function () {
 
   //console.log(wordItems)
 
-  window.addEventListener('keydown', (key) => {
+  continueButton.addEventListener('click', () => {
+    incr += 1;
+    getNewQuestion(incr);
+    answerArr = [];
+    answerFieldWordsArr = []
+    console.log(answerArr)
+    answerField.innerHTML = '';
+    winFooter.style.display = 'none';
+    footer.style.display = 'flex';
+    checkButton.classList.add('disabledCheckButton');
+    checkButton.classList.remove('enabled-check-button');
+  });
+
+  /* window.addEventListener('keydown', (key) => {
     if (key.keyCode == "39") {
       incr += 1;
       getNewQuestion(incr);
@@ -214,5 +237,5 @@ window.addEventListener('load', function () {
       incr -= 1;
       getNewQuestion(incr);
     }
-  });
+  }); */
 });
