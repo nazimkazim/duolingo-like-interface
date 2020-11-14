@@ -6,6 +6,7 @@ window.addEventListener('load', function () {
   const answerField = document.querySelector('.answer-field');
   const footer = document.querySelector('.footer');
   const continueButton = document.querySelector('.continue-button');
+  const progress = document.querySelector('.progress');
 
   const winFooter = document.querySelector('.win-footer');
   winFooter.style.display = 'none';
@@ -27,8 +28,10 @@ window.addEventListener('load', function () {
   let randomWordsArrDom = [];
   let answerFieldWordsArr = [];
   let answerArr = [];
+  let progressStart = 0;
+  const progressRange = 100 / data.length
   const widthHeightArr = [];
-  var index = 0;
+  let index = 0;
   //let answerWordsArrIsFull = false;
 
   // console.log('random words arr', randomWordsArr)
@@ -38,7 +41,6 @@ window.addEventListener('load', function () {
     splittedStr = obj.engPhrase.split(" ");
     copy_array = randomWordsArr;
     return randomWordsArr.push(...splittedStr);
-
   });
 
   shuffle(randomWordsArr).map((randWord) => {
@@ -181,8 +183,10 @@ window.addEventListener('load', function () {
     let ansStr = answerArr.join(' ');
     if (ansStr === data[incr].engPhrase) {
       console.log('correct');
+      progressStart += progressRange
       footer.style.display = 'none';
       winFooter.style.display = 'flex';
+      progress.style.width = progressStart + '%';
     } else {
       console.log('false');
     }
@@ -219,8 +223,8 @@ window.addEventListener('load', function () {
     incr += 1;
     getNewQuestion(incr);
     answerArr = [];
-    answerFieldWordsArr = []
-    console.log(answerArr)
+    answerFieldWordsArr = [];
+    console.log(answerArr);
     answerField.innerHTML = '';
     winFooter.style.display = 'none';
     footer.style.display = 'flex';
