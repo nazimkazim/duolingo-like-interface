@@ -29,52 +29,59 @@ window.addEventListener('load', function () {
   let answerFieldWordsArr = [];
   let answerArr = [];
   let progressStart = 0;
-  const progressRange = 100 / data.length
+  const progressRange = 100 / data.length;
   const widthHeightArr = [];
   let index = 0;
+  let sound = null;
   //let answerWordsArrIsFull = false;
 
   // console.log('random words arr', randomWordsArr)
 
 
-  data.map((obj) => {
-    splittedStr = obj.engPhrase.split(" ");
-    copy_array = randomWordsArr;
-    return randomWordsArr.push(...splittedStr);
-  });
 
-  shuffle(randomWordsArr).map((randWord) => {
+  const randomWordsCreator = () => {
+    data.map((obj) => {
+      splittedStr = obj.engPhrase.split(" ");
+      copy_array = randomWordsArr;
+      return randomWordsArr.push(...splittedStr);
+    });
 
-    //placeholder
-    const parent_button = document.createElement('div');
-    parent_button.className = 'placeholder';
-    parent_button.id = index;
+    shuffle(randomWordsArr).map((randWord) => {
+      //placeholder
+      const parent_button = document.createElement('div');
+      parent_button.className = 'placeholder';
+      parent_button.id = index;
 
 
-    //random word
-    randomWordsField.appendChild(parent_button);
-    const button_element = document.createElement('button');
+      //random word
+      randomWordsField.appendChild(parent_button);
+      const button_element = document.createElement('button');
 
-    button_element.textContent = randWord;
-    button_element.className = 'word';
-    button_element.id = index;
-    button_element.setAttribute('value', randWord);
+      button_element.textContent = randWord;
+      button_element.className = 'word';
+      button_element.id = index;
+      button_element.setAttribute('value', randWord);
 
-    var current_placeholder = document.getElementById(index);
-    current_placeholder.appendChild(button_element);
+      var current_placeholder = document.getElementById(index);
+      current_placeholder.appendChild(button_element);
 
-    //setting height and width of parent element equal to child element
-    var childHeight = button_element.offsetHeight * 1.5;
-    var childWidth = button_element.offsetWidth * 1.5;
-    parent_button.style.height = childHeight + "px";
-    parent_button.style.width = childWidth + "px";
-    widthHeightArr[index] = [childHeight, childWidth];
-    index++;
-  });
+      //setting height and width of parent element equal to child element
+      var childHeight = button_element.offsetHeight * 1.5;
+      var childWidth = button_element.offsetWidth * 1.5;
+      parent_button.style.height = childHeight + "px";
+      parent_button.style.width = childWidth + "px";
+      widthHeightArr[index] = [childHeight, childWidth];
+      index++;
+    });
 
-  randomWordsArrDom.forEach(w => {
-    randomWordsField.appendChild(w);
-  });
+    randomWordsArrDom.forEach(w => {
+      randomWordsField.appendChild(w);
+    });
+  };
+
+  randomWordsCreator();
+
+  //console.log(randomWordsArr,randomWordsArrDom,answerFieldWordsArr);
 
   //function to push target into answer and changing eventlistner
   function pushIntoAnswer(e) {
@@ -123,7 +130,6 @@ window.addEventListener('load', function () {
   let childArr = arr.map((arr) => arr.children[0]);
   childArr.forEach(w => {
     w.addEventListener('click', pushIntoAnswer);
-
   });
 
   //map answer array and add eventlistener
@@ -175,20 +181,24 @@ window.addEventListener('load', function () {
 
   // Check answers 
   const checkAnswer = () => {
-    console.log(answerArr);
+    //console.log(answerArr);
     answerFieldWordsArr.forEach((item) => {
       let val = item.value;
       answerArr.push(val);
     });
     let ansStr = answerArr.join(' ');
     if (ansStr === data[incr].engPhrase) {
-      console.log('correct');
-      progressStart += progressRange
+      //console.log('correct');
+      sound = new Audio('https://res.cloudinary.com/nzmai/video/upload/v1605697967/lvlupsound_n13hts.mp3');
+      sound.play()
+      progressStart += progressRange;
       footer.style.display = 'none';
       winFooter.style.display = 'flex';
       progress.style.width = progressStart + '%';
     } else {
-      console.log('false');
+      //console.log('false');
+      sound = new Audio('https://res.cloudinary.com/nzmai/video/upload/v1605698209/errorsound_jxtmqg.mp3');
+      sound.play()
     }
   };
 
@@ -207,6 +217,8 @@ window.addEventListener('load', function () {
     }));
   };
 
+  getNewQuestion(incr)
+
   const speak = (phrase, lang) => {
     let toSpeak = new SpeechSynthesisUtterance(phrase);
     toSpeak.lang = lang;
@@ -221,10 +233,10 @@ window.addEventListener('load', function () {
 
   continueButton.addEventListener('click', () => {
     incr += 1;
+    index = 0;
     getNewQuestion(incr);
     answerArr = [];
     answerFieldWordsArr = [];
-    console.log(answerArr);
     answerField.innerHTML = '';
     winFooter.style.display = 'none';
     footer.style.display = 'flex';
