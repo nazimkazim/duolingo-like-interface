@@ -6,10 +6,14 @@ window.addEventListener('load', function () {
   const answerField = document.querySelector('.answer-field');
   const footer = document.querySelector('.footer');
   const continueButton = document.querySelector('.continue-button');
+  const continueButtonFail = document.querySelector('.continue-button-fail');
+
   const progress = document.querySelector('.progress');
 
   const winFooter = document.querySelector('.win-footer');
   winFooter.style.display = 'none';
+  const loseFooter = document.querySelector('.lose-footer');
+  loseFooter.style.display = 'none';
 
   let checkButton = document.querySelector('.check-button');
   checkButton.disabled = true;
@@ -190,7 +194,7 @@ window.addEventListener('load', function () {
     if (ansStr === data[incr].engPhrase) {
       //console.log('correct');
       sound = new Audio('https://res.cloudinary.com/nzmai/video/upload/v1605697967/lvlupsound_n13hts.mp3');
-      sound.play()
+      sound.play();
       progressStart += progressRange;
       footer.style.display = 'none';
       winFooter.style.display = 'flex';
@@ -198,7 +202,9 @@ window.addEventListener('load', function () {
     } else {
       //console.log('false');
       sound = new Audio('https://res.cloudinary.com/nzmai/video/upload/v1605698209/errorsound_jxtmqg.mp3');
-      sound.play()
+      sound.play();
+      footer.style.display = 'none';
+      loseFooter.style.display = 'flex';
     }
   };
 
@@ -217,7 +223,7 @@ window.addEventListener('load', function () {
     }));
   };
 
-  getNewQuestion(incr)
+  getNewQuestion(incr);
 
   const speak = (phrase, lang) => {
     let toSpeak = new SpeechSynthesisUtterance(phrase);
@@ -239,6 +245,19 @@ window.addEventListener('load', function () {
     answerFieldWordsArr = [];
     answerField.innerHTML = '';
     winFooter.style.display = 'none';
+    footer.style.display = 'flex';
+    checkButton.classList.add('disabledCheckButton');
+    checkButton.classList.remove('enabled-check-button');
+  });
+
+  continueButtonFail.addEventListener('click', () => {
+    incr += 1;
+    index = 0;
+    getNewQuestion(incr);
+    answerArr = [];
+    answerFieldWordsArr = [];
+    answerField.innerHTML = '';
+    loseFooter.style.display = 'none';
     footer.style.display = 'flex';
     checkButton.classList.add('disabledCheckButton');
     checkButton.classList.remove('enabled-check-button');
