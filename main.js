@@ -23,7 +23,7 @@ window.addEventListener('load', function () {
   }
 
   speakerEl.setAttribute('id', 'speaker');
-  speakerEl.src = '/assets/speaker.svg';
+  speakerEl.src = './assets/speaker.svg';
 
 
   const tts = window.speechSynthesis;
